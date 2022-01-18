@@ -1,0 +1,3 @@
+000001,libro1,autoruno,O,11111111,
+000002,libro2,autordos,L,0,
+000003,libro3,autortres,L,0,

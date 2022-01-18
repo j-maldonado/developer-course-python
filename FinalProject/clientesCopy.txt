@@ -1,0 +1,3 @@
+34343434,asdasdasd dsadsadsa,48484848,calle 34545,L,0,
+11111111,matias palacio,48484841,direccion 234,O,000001,
+22222222,michael jackson,45454545,calle 4567,L,0,
