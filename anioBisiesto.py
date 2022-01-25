@@ -15,7 +15,7 @@ def es_bisiesto(anio):
     if anio % 4 != 0: #no divisible entre 4
 	    print("No es bisiesto")
 
-    elif anio % 4 == 0 and anio % 100 != 0: #divisible entre 4 y no 100 o 400
+    elif anio % 4 == 0 and anio % 100 != 0:
 	    print("Es bisiesto")
 
     elif anio % 4 == 0 and anio % 100 == 0 and anio % 400 != 0: #divisible en 4 y 10 y no en 400
