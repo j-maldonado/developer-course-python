@@ -1,4 +1,4 @@
-
+#Calcular el sueldo a pagar de un empleado
 while True:
     try:
         CantHoras = int(input("Ingrese cantidad de Horas Trabajadas: "))

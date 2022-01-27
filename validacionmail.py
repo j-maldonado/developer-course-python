@@ -1,4 +1,4 @@
-
+#Validar que lo ingresado sea un email
 while True:
     try:
         mail = input("Ingrese su e-mail: ")
