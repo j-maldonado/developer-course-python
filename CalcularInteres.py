@@ -24,4 +24,4 @@ while True:
  
 capObt = (pesos * (1 + interes/100) ** anios)
  
-print('El capita total al cabo de ', anios, 'anios sera de ', capObt)
+print('El capital total al cabo de ', anios, 'anios sera de ', capObt)
