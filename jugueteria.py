@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
+#calcular el peso en gramos
 payaso = 11.2
 munieca = 7.5
 

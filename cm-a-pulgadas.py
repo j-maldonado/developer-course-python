@@ -1,3 +1,5 @@
+#convertir de cm a pulgadas
+
 Selec = input("Ingrese 1 para PIES o 2 para PULGADAS: ")
 
 if Selec == '1':
