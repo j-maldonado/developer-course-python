@@ -1,4 +1,7 @@
-'''igual, aux = 0, 0
+'''
+primer metodo:
+
+igual, aux = 0, 0
 texto = input('Ingrese la palabra que desea evaluar: ')
 
 for cont in reversed(range(0, len(texto))):
