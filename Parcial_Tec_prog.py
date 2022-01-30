@@ -1,4 +1,4 @@
-#Según dos cifras ingresadas determinar los numeros primos entre ambas cifras inclusive y mostrarlos en una lista.
+#Según dos cifras ingresadas determinar los numeros primos entre ambas cifras inclusive y mostrarlos en una lista
 
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
