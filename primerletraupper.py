@@ -1,3 +1,5 @@
+#Convierte primera letra en Mayuscula
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 texto = input("Ingrese texto: ")
