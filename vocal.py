@@ -1,6 +1,3 @@
-#primer comentario de ejemplo
-#nomUser ;si es declaracion de variables de dos palabras la segunda se usa en Mayusc.
-
 colores = ['verde', 'amarillo', 'rojo', 'violeta', 'marron']
 """ ok = True
 if ok != True: #Si ok es igual a True entonces... (los dos puntos quieren decir "entonces")

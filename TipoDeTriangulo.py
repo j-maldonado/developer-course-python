@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+#Detectar que tipo de triangulo es
 while True:
 	try:
 		ladoA = int(input("ingrece la medida del lado 1 en cm: "))
