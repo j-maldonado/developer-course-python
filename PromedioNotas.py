@@ -1,3 +1,5 @@
+#calcular el promedio de las notas
+
 while True:
     try:
         Nota1= int(input("Ingrese la Nota 1: "))
