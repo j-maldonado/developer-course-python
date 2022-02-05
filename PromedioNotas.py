@@ -1,4 +1,4 @@
-#calcular el promedio de las notas
+#calcular el promedio de las notas ingresando lo indicado
 
 while True:
     try:
