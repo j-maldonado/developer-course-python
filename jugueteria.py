@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
-#calcular el peso en gramos
+#calcular el peso en gramos del envio en total
 payaso = 11.2
 munieca = 7.5
 
