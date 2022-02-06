@@ -11,7 +11,7 @@ for cont in reversed(range(0, len(texto))):
 if len(texto) == igual:
   print("El texto ES Palindromo")
 else:
-  print("El texto ingresado NO es Palindromo")'''
+  print("El texto ingresado NO es un Palindromo")'''
 
 
 palabra = input('Ingrese una palabra: ')
