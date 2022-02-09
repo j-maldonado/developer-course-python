@@ -1,4 +1,4 @@
-Calcular y Mostrar la serie Fibonacci hasta el 100. (cada número es la suma de los dos precedentes, comenzando por 0 y 1).
+#Calcular y Mostrar la serie Fibonacci hasta el 100. (cada número es la suma de los dos precedentes, comenzando por 0 y 1).
 
 var a=0
 var b=1
