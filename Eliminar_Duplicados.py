@@ -1,4 +1,4 @@
-#Escribe una función llamada "elimina_duplicados" que elimine los elementos duplicados en una lista y los devuelva en una nueva lista
+#Escribe una función llamada "elimina_duplicados" que elimine los elementos duplicados de una lista y los devuelva en una nueva lista
 
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
