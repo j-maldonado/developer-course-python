@@ -1,6 +1,6 @@
 colores = ['verde', 'amarillo', 'rojo', 'violeta', 'marron']
 """ ok = True
-if ok != True: #Si ok es igual a True entonces... (los dos puntos quieren decir "entonces")
+if ok != True: #Si ok es igual a True entonces...
     print("pase por aqui") #para que quede dentro de la condicion "entonces" tiene que ponerse dentro (un espacio adnetro) de la sentencia
 else:
     print ("Ok es igual a otro")
