@@ -1,4 +1,4 @@
-#convertir segundos ingresados a minutos correspondientes
+#convertir los segundos ingresados a minutos correspondientes
 
 seg=int(input("ingrese cantidad de segundos "))
 minutos=0
