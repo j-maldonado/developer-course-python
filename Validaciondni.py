@@ -1,3 +1,4 @@
+#Validar que el numero ingresado sea un Dni
 while True:
     try:
         dni= input('Ingrese su numero de DNI: ')
