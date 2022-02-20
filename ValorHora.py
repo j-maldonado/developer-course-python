@@ -14,4 +14,4 @@ while True:
         print("Ingresar un Valor NUMERICO")
 
 Sueldo = ValorHora*CantHoras
-print('El sueldo a pagar de este mes es de', Sueldo)
+print('El sueldo a pagar del corriente mes es de', Sueldo)
