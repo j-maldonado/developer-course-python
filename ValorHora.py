@@ -8,7 +8,7 @@ while True:
 
 while True:
     try:
-        ValorHora = int(input("Ingrese Valor en $$ de cada Hora: "))
+        ValorHora = int(input("Ingrese Valor en $ (pesos) de cada Hora: "))
         break
     except ValueError:
         print("Ingresar un Valor NUMERICO")
