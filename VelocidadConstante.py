@@ -1,4 +1,4 @@
-#Calcular la distancia recorrida a velocidad constante dad la velocidad en km/h
+#Calcular la distancia recorrida a una velocidad constante dada la velocidad en km/h
 while True:
     try:
         Velocidad = int(input("Ingrese la Velocidad Constante en Km/h: "))
