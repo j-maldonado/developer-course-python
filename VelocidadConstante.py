@@ -14,4 +14,4 @@ while True:
         print("Ingrese un Numero")
 
 Distancia = Velocidad*(Tiempo/60)
-print('La Distancia recorrida durante', Tiempo, 'minutos a', Velocidad, 'Km/h es de ', Distancia, 'Kilometros')
+print('La Distancia recorrida durante', Tiempo, 'minutos a una velocidad de', Velocidad, 'Km/h es de ', Distancia, 'Kilometros')
