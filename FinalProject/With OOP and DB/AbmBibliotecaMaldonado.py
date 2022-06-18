@@ -5,12 +5,12 @@ import mariadb
 dbbiblioteca = mariadb.connect(
     host="127.0.0.1",
     user="root",
-    password="25109",    # no le puse pass a mi base por el momento
+    password="25109", 
     database='biblioteca_Maldonado'
 )
 cur = dbbiblioteca.cursor()
 
-""" cur.execute("SELECT * FROM libros")    # selecciono todos los registros de mi tabla cliente
+""" cur.execute("SELECT * FROM libros")   
 myresultado = cur.fetchall()
 for ind in myresultado:
   print(ind) """
