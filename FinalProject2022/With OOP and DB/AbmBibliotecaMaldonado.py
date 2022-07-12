@@ -247,20 +247,15 @@ def pedirTelefono():
 def muestroMenu():
     print("\n\n\n\n****************** ABM BIBLIOTECA *******************")
     print('''\n
-    [0] - Consulta de disponibilidad
 
-    [1] - Préstamo de Libro:
-        -   Consultar todos los títulos
-        -   Registrar préstamo
-        -   Registrar Devolución
+    [1] - Proveedores:
+        -   Alta / Baja / Modif
+        -   Pedido de reposición
+        -   Devolución a proveedor:
+    [2] - Cliente:
+        -   Alta / Baja / Modif
 
-    [2] - Gestión del cliente:
-        -   Alta de cliente
-        -   Consulta estado del cliente
-        -   Modificar teléfono o direccion del cliente
-        -   Eliminar cliente
-
-    [3] - Gestión de Libro:
+    [3] - Facturacion:
         -   Alta de Libro
         -   Consultar estado de Libro
         -   Modificar Libro
@@ -268,7 +263,7 @@ def muestroMenu():
 
     [4] - Salir
 
-****************************************************
+    ****************************************************
     ''')
 
 #consulta estado

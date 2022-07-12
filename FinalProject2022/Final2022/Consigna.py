@@ -25,12 +25,13 @@ Menú:
          - Facturación: dado un cliente, podrá comprar uno o varios artículos mostrando el monto a pagar y descontando del stock en cada artículo.
          - Listado de ventas del día: deberá mostrar todos los artículos vendidos en el día. """
 
-
+#Creacion de Base
 dbMayorista = mariadb.connect(
     host="127.0.0.1",
     user="root",
     password="25109",
-    autocommit=True)
+    autocommit=True,
+    database='MayoristaWilly')
 
 """ print(dbMayorista)
 mycursor= dbMayorista.cursor()
@@ -42,24 +43,37 @@ for x in mycursor:
     print(x) """
 
 
+
+"""
 ######## CREACION DE TABLAS ########
-""" 
+
+
 mycursor = dbMayorista.cursor()
 mycursor.execute("CREATE TABLE Proveedores (CUIT INT PRIMARY KEY, Nombre VARCHAR(255), Direccion VARCHAR(255), Telefono INT ,Mail VARCHAR(255), ID_IVA INT)")
 dbMayorista.commit()
+
 mycursor.execute("CREATE TABLE Clientes (DNI INT PRIMARY KEY, NombreApellido VARCHAR(255), Direccion VARCHAR(255), Telefono INT ,Mail VARCHAR(255), ID_IVA INT)")
 dbMayorista.commit()
-mycursor.execute("CREATE TABLE Situacion_IVA (SituacionIVA VARCHAR(255))")
+
+mycursor.execute("CREATE TABLE Situacion_IVA (ID_IVA INT AUTO_INCREMENT PRIMARY KEY, Situacion_IVA VARCHAR(255))")
 dbMayorista.commit()
-mycursor.execute("CREATE TABLE Articulos (Codigo_de_barra INT, Nombre VARCHAR(255), Categoría VARCHAR(255), Precio INT, Stock INT, CUIT_Proveedor INT)")
+
+mycursor.execute("CREATE TABLE Articulos (Codigo_de_barra INT PRIMARY KEY, Nombre VARCHAR(255), Categoría VARCHAR(255), Precio FLOAT, Stock INT, CUIT_Proveedor INT)")
 dbMayorista.commit()
- """
+
+mycursor.execute("CREATE TABLE Ventas (NUM_fact INT, Fecha_Venta DATE, Tipo_de_factura VARCHAR(255), Dni INT, Codigo_barra_articulo INT, Cantidad_Articulo INT, Valor_Articulo FLOAT, Subtotal FLOAT)")
+dbMayorista.commit()
+
+mycursor.execute("CREATE TABLE Pedidos (ID_PEDIDO INT AUTO_INCREMENT PRIMARY KEY, Fecha_pedido DATE, CUIT_Proveedor INT, Codigo_de_barra_Articulo INT, Cantidad_Articulo INT, Numero_Remito INT, Total_Remito FLOAT)")
+dbMayorista.commit()
+"""
 
 
 ######## INSERTO VALORES EN TABLAS ########
 
+"""
 ##VALORES TABLA PROVEEDORES
-mycursor = dbMayorista.cursor()
+ mycursor = dbMayorista.cursor()
 sql = "INSERT INTO Proveedores (CUIT, Nombre, Direccion, Telefono, Mail, ID_IVA) VALUES (%s, %s, %s, %s, %s, %s)"
 val = [
     (30525390086, 'COCA COLA FEMSA', "Av. Amancio Alcorta 3570", 46308999, "cocacolafemsa@mail.com" ,1),
@@ -92,7 +106,7 @@ mycursor.executemany(sql, val)
 dbMayorista.commit()
 print(mycursor.rowcount, "Fueron insertados en tabla Clientes.")
 cur = dbMayorista.cursor()
-
+ """
 
 ##VALORES TABLA ARTICULOS
 mycursor = dbMayorista.cursor()
@@ -118,7 +132,7 @@ dbMayorista.commit()
 print(mycursor.rowcount, "Fueron insertados en tabla Articulos.")
 cur = dbMayorista.cursor()
 
-##VALORES TABLA Situacion_IVA
+##VALORES TABLA Situacion_IVA   #######NO INGRESO IDCLIENTES#######
 mycursor = dbMayorista.cursor()
 sql = "INSERT INTO Situacion_IVA (Situacion_Frente_a_IVA) (%s)"
 val = [
@@ -135,7 +149,7 @@ cur = dbMayorista.cursor()
 
 
 
-
+"""
 ######## CREACION DE CLASES ########
 
 
@@ -169,11 +183,12 @@ class Clientes:
 
 ## CLASE SITUACION IVA
 class Situacion_IVA:
-    def __init__ (self, situacionIVA):
+    def __init__ (self, situacionIVA, idIVA):
         self.situacionIVA= situacionIVA
+        self.idIVA= idIVA
 
     def printSituacion_IVA(self):
-        return self.situacionIVA
+        return self.situacionIVA, self.idIVA
 
 ## CLASE ARTICULOS
 class Articulos:
@@ -190,6 +205,37 @@ class Articulos:
 
 
 
+## CLASE Ventas 
+class Ventas:
+    def __init__ (self, numFact, fechaVenta, tipoFactura, dniCliente , codigoArticulo, cantArticulo, valorArticulo, subtotalVenta):
+        self.numFact=numFact
+        self.fechaVenta= fechaVenta
+        self.tipoFactura= tipoFactura
+        self.dniCliente= dniCliente
+        self.codigoArticulo= codigoArticulo
+        self.cantArticulo= cantArticulo
+        self.valorArticulo= valorArticulo
+        self.subtotalVenta= subtotalVenta
+
+    def printArticulos(self):
+        return self.numFact, self.fechaVenta, self.tipoFactura, self.dniCliente, self.codigoArticulo, self.cantArticulo,  self.valorArticulo,  self.subtotalVenta
+
+
+## CLASE Pedidos
+class Pedidos:
+    def __init__ (self, IDPedido, fechaPedido, cuitProveedor, codigoArticulo, cantArticulo, numeroRemito, totalRemito):
+        self.IDPedido=IDPedido
+        self.fechaPedido= fechaPedido
+        self.cuitProveedor= cuitProveedor
+        self.codigoArticulo= codigoArticulo
+        self.cantArticulo = cantArticulo
+        self.numeroRemito= numeroRemito
+        self.totalRemito= totalRemito
+
+    def printArticulos(self):
+        return self.IDPedido, self.fechaPedido, self.cuitProveedor, self.codigoArticulo, self.cantArticulo, self.numeroRemito, self.totalRemito
+
+
 ######## FIN DE CREACION DE CLASES ########
 
-
+"""
