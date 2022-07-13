@@ -4,6 +4,7 @@ from operator import truediv
 from pydoc import cli
 import sys
 import re
+from tkinter import Menu
 import mariadb
 import os
 import Clientes
@@ -18,6 +19,7 @@ dbMayorista = mariadb.connect(
     user = 'root',
     password = '25109',
     database = 'Mayorista_Willy'
+
 )
 mycursor = dbMayorista.cursor()
 
@@ -128,7 +130,7 @@ def buscarSinStock ():
     if len(resultadoBusquedaArticulo)> 0:
         return resultadoBusquedaArticulo
     else:
-        print('****ARTICULO NO ENCONTRADO CON CONDICIONES DE BUSQUEDA ****')
+        print('****ARTICULO NO COINCIDE CON CONDICIONES DE BUSQUEDA ****')
         seguirONo()
 
 def buscarVentasDelDia ():
@@ -245,7 +247,7 @@ def pedirCodigo():
             validadorCodigo = validarNumerico(codigo)
         if validadorCodigo == False:
             print(
-                "****CODIGO DE BARRAS MAL INGRESADO**** \n- Debe tener mas de 6 caracteres, solamente numéricos -")
+                "****CODIGO DE BARRAS MAL INGRESADO**** \n- Debe tener 6 o mas caracteres, solamente numéricos -")
     return codigo
 
 def seguirONo():
@@ -823,6 +825,7 @@ while validador == True:
                 ''')
         print("***********************************************")
         opcionVentas = input('Elija la opción deseada:')
+        clearConsole()
         print(f"\nSu Opcion fue {opcionVentas}")
 
          ############SUBMENU VENTAS FACTURACION################

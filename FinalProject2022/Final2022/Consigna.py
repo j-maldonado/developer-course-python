@@ -76,13 +76,13 @@ dbMayorista.commit()
  mycursor = dbMayorista.cursor()
 sql = "INSERT INTO Proveedores (CUIT, Nombre, Direccion, Telefono, Mail, ID_IVA) VALUES (%s, %s, %s, %s, %s, %s)"
 val = [
-    (30525390086, 'COCA COLA FEMSA', "Av. Amancio Alcorta 3570", 46308999, "cocacolafemsa@mail.com" ,1),
-    (30537647716, 'PEPSICO DE ARGENTINA', "Cazadores de Coquimbo 2860", 55335000,"pepsicoarg@mail.com", 2),
-    (30500572309, 'JOHNSON & JOHNSON DE ARGENTINA', "RN8 km 63,5", 4490101, "j&jargentina@mail.com" , 3),
-    (30605206782, 'CLOROX ARGENTINA', "Coquimbo 2860", 52308200, "cloroxargentina@mail.com",4),
-    (30547242331, 'MASTELLONE HNOS', "Encarnación Ezcurra 365", 4859000, "mastellonehermanos@mail.com", 5),    
-    (30501677643, 'SANCOR COOPERATIVAS UNIDAS', "Tacuarí 202", 51763699, "sancorlacteos@mail.com" , 6),
-    (30502793175, 'ARCOR', "Guillermo White 4546", 43109500, "arcorarg@mail.com", 7)
+    (30525390086, 'COCA COLA FEMSA', "Juan CocaCola", "Av. Amancio Alcorta 3570", "cocacolafemsa@mail.com", 46308999, ,1),
+    (30537647716, 'PEPSICO DE ARGENTINA', "Jose Pepsi", "Cazadores de Coquimbo 2860", "pepsicoarg@mail.com", 55335000, 2),
+    (30500572309, 'JOHNSON & JOHNSON DE ARGENTINA', "Gerardo Johnson", "RN8 km 63,5", "j&jargentina@mail.com", 4490101, 3),
+    (30605206782, 'CLOROX ARGENTINA',"Miguel Clorox", "Coquimbo 2860", "cloroxargentina@mail.com", 52308200, 4),
+    (30547242331, 'MASTELLONE HNOS',"Ricardo Mastellone", "Encarnación Ezcurra 365", "mastellonehermanos@mail.com", 4859000,  5),    
+    (30501677643, 'SANCOR COOPERATIVAS UNIDAS',"Fernando Sancor", "Tacuarí 202", "sancorlacteos@mail.com" , 51763699,  6),
+    (30502793175, 'ARCOR', "Reinaldo Arcor","Guillermo White 4546", "arcorarg@mail.com", 43109500,  7)
     ]
 mycursor.executemany(sql, val)
 dbMayorista.commit()
@@ -92,7 +92,7 @@ cur = dbMayorista.cursor()
 
 ##VALORES TABLA CLIENTES
 mycursor = dbMayorista.cursor()
-sql = "INSERT INTO Clientes (DNI, NombreApellido, Direccion, Telefono, Mail , ID_IVA) VALUES (%s, %s, %s, %s, %s, %s)"
+sql = "INSERT INTO Clientes (DNI, Nombre_Apellido, Direccion, Telefono, Mail , ID_IVA) VALUES (%s, %s, %s, %s, %s, %s)"
 val = [
     (36596894, 'Joan Maldonado', "Mario Bravo 1155", 1557558051,'joanmarcelomaldonado@gmail.com', 8),
     (45150221, 'Tomas Ruiz', "Miguel 6864",1545557333, 'tomasruiz@mail.com', 9),
@@ -109,23 +109,23 @@ cur = dbMayorista.cursor()
  """
 
 ##VALORES TABLA ARTICULOS
-mycursor = dbMayorista.cursor()
-sql = "INSERT INTO Articulos (Codigo_de_barra, Nombre, Categoría, Precio, Stock, CUIT_Proveedor) (%s, %s, %s, %s, %s, %s)"
+""" mycursor = dbMayorista.cursor()
+sql = "INSERT INTO Articulos (CodigoBarras, Nombre, id_Rubro, Precio_Publico, Stock)"
 val = [
-    (7790895000218 , 'Coca-Cola', "Bebida", 250,50, 30525390086),
-    (7501055305650, 'Sprite', "Bebida", 240, 80, 30525390086),
-    (8410199021113, 'Lays Papas Fritas', "Snack", 140, 20, 30537647716),
-    (7501031311606, 'Pepsi', "Bebida", 220, 45, 30537647716),
-    (7790010002301, 'Carefree', "Proteccion Femenina", 180, 25, 30500572309),
-    (7891010619404, 'Listerine', "Cuidado Oral", 135, 20, 30500572309),
-    (7793253000998, 'Ayudin Gel', "Limpieza", 125, 23, 30605206782),
-    (7793253004439, 'Ayudin Lavandina', "Limpieza", 105, 120, 30605206782),
-    (7790742162106, 'Leche Descremada', "Lacteos", 108, 130, 30547242331),
-    (7790895000218, 'Manteca', "Lacteos", 127, 30, 30547242331),
-    (7798321151138, 'Yogs Firme', "Lacteos", 90, 107, 30501677643),
-    (7790080014709, 'Queso Rallado', "Lacteos", 180, 200, 30501677643),
-    (7790580221904, 'Pure de Tomate', "Alimentos de Origen Vegetal", 120, 130, 30502793175),
-    (7790580421007, 'Rocklets', "Golosinas", 150, 40, 30502793175)
+    (7790895000218 , 'Coca-Cola', 2, 250,50),
+    (7501055305650, 'Sprite', 2, 240, 80),
+    (8410199021113, 'Lays Papas Fritas', 5, 140, 20),
+    (7501031311606, 'Pepsi', 2, 220, 45),
+    (7790010002301, 'Carefree', 6, 180, 25),
+    (7891010619404, 'Listerine', 7, 135, 20),
+    (7793253000998, 'Ayudin Gel', 1, 125, 23),
+    (7793253004439, 'Ayudin Lavandina', 1, 105, 120),
+    (7790742162106, 'Leche Descremada', 4, 108, 130),
+    (7790895000218, 'Manteca', 4, 127, 30),
+    (7798321151138, 'Yogs Firme', 4, 90, 107),
+    (7790080014709, 'Queso Rallado', 4, 180, 200),
+    (7790580221904, 'Pure de Tomate', 8, 120, 130),
+    (7790580421007, 'Rocklets', 3, 150, 40)
     ]
 mycursor.executemany(sql, val)
 dbMayorista.commit()
@@ -144,7 +144,7 @@ val = [
 mycursor.executemany(sql, val)
 dbMayorista.commit()
 print(mycursor.rowcount, "Fueron insertados en tabla Situacion_IVA.")
-cur = dbMayorista.cursor()
+cur = dbMayorista.cursor() """
 
 
 
