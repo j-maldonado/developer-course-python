@@ -196,7 +196,7 @@ def pedirDni():
     return dni
 
 def existeCliente(dni):
-    sqlbusqueda = 'SELECT * FROM clientes WHERE NI = ' + str(dni)
+    sqlbusqueda = 'SELECT * FROM clientes WHERE DNI = ' + str(dni)
     mycursor.execute(sqlbusqueda)        
     Resultado = mycursor.fetchall()
     if len(Resultado) > 0:
