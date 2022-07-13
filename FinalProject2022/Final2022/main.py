@@ -18,7 +18,8 @@ dbMayorista = mariadb.connect(
     host = '127.0.0.1',
     user = 'root',
     password = '25109',
-    database = 'Mayorista_Willy'
+    database = 'Mayorista_Willy',
+    autocommit= True
 
 )
 mycursor = dbMayorista.cursor()
@@ -131,6 +132,7 @@ def buscarSinStock ():
         return resultadoBusquedaArticulo
     else:
         print('****ARTICULO NO COINCIDE CON CONDICIONES DE BUSQUEDA ****')
+        return resultadoBusquedaArticulo
         seguirONo()
 
 def buscarVentasDelDia ():
@@ -142,7 +144,8 @@ def buscarVentasDelDia ():
         return resultadoBusquedaVentasDelDia
     else:
         print('****NO HAY VENTAS DEL DIA****')
-        seguirONo()
+        return resultadoBusquedaVentasDelDia
+        
         
 
 """ def pedirRubro():
@@ -578,7 +581,7 @@ while validador == True:
                 ############ALTA DE CLIENTE################
                 if opcionClientes =='1':
                     print("***************** CLIENTES *****************")
-                    print("************** ALTA DE CLIENTE **************")
+                    print("************** ALTA DE CLIENTE **************")    
                     dni=pedirDni()
                     if not existeCliente(dni):
                         nombreApellido=pedirNombre()
@@ -593,6 +596,7 @@ while validador == True:
                         if opcionElegidaIva == '1' or opcionElegidaIva =='2' or opcionElegidaIva =='3' or opcionElegidaIva =='4':
                             clienteNuevo=Clientes.Cliente(dni, nombreApellido, direccion, telefono, mail, opcionElegidaIva)
                             clienteNuevo.altaCliente()
+                            dbMayorista.commit()
                             print('*** CLIENTE CREADO EXITOSAMENTE ***')
                             seguirONo()
                         else:
@@ -611,6 +615,7 @@ while validador == True:
                     dni=pedirDni()
                     buscarDniBaja=buscarDni(dni)
                     buscarDniBaja.borrarCliente(dni)
+                    dbMayorista.commit()
                     print('****CLIENTE ELIMINADO****')
                     seguirONo()
 
@@ -643,6 +648,7 @@ while validador == True:
 
                     clienteModificado=Clientes.Cliente(dni, nombreApellido, direccion, telefono, mail, opcionElegidaIva)
                     clienteModificado.editarCliente(dniAModificar[0])
+                    dbMayorista.commit()
                     print('****CLIENTE MODIFICADO****')
                     seguirONo()
 
@@ -726,8 +732,9 @@ while validador == True:
                     stock= pedirStock()
                     articuloNuevo= Articulos.Articulo(codigo,nombreArticulo,opcionRubro, precio, stock)
                     articuloNuevo.altaArticulo()
+                    dbMayorista.commit()
                     print('*** ARTICULO CREADO EXITOSAMENTE ***')
-                    seguirONo()      
+                    seguirONo()   
                 else:
                     print('****ARTICULO YA EXISTE****')
                     seguirONo()
@@ -740,6 +747,7 @@ while validador == True:
                 codigo=pedirCodigo()
                 buscarCodigoBaja=buscarCodigo(codigo)
                 buscarCodigoBaja.borrarArticulo(codigo)
+                dbMayorista.commit()
                 print('****ARTICULO ELIMINADO****')
                 seguirONo()
             
@@ -770,6 +778,7 @@ while validador == True:
                 stock= pedirStock()
                 articuloModificado=Articulos.Articulo(codigo,nombreArticulo,opcionRubro,precio,stock)
                 articuloModificado.editarArticulo(codigoAModificar[0])
+                dbMayorista.commit()
                 print('****ARTICULO MODIFICADO*****')
                 seguirONo()
                 
@@ -779,6 +788,7 @@ while validador == True:
                 print('****VUELVE AL MENU PRINCIPAL****')
                 muestroMenu()
 
+            
             ############Si no coloca opcion Valida ################
             else:
                 print("****NO SE HA ELEGIDO UNA OPCION VALIDA****")
@@ -806,6 +816,10 @@ while validador == True:
                 print(f'-------------------------')
                 
             seguirONo()
+        
+        elif opcionArticulos =='0':
+            print('****VUELVE AL MENU PRINCIPAL****')
+            muestroMenu()
         
         else:
             print("****NO SE HA ELEGIDO UNA OPCION VALIDA****")
@@ -838,16 +852,19 @@ while validador == True:
             print("**************** VENTAS ****************")
             print(f"******* VENTAS DEL DIA {datetime.date.today()} **************")
             ventasdelDia=buscarVentasDelDia()
-            for reg in ventasdelDia:
-                print(f'NRO FACTURA: {reg[0]}')
-                print(f'FECHA: {reg[1]}')
-                print(f'TIPO DE FACTURA: {reg[3]}')
-                print(f'ID CLIENTE: {reg[4]}')
-                print(f'ID ARTICULO: {reg[5]}')
-                print(f'SUBTOTAL: {reg[8]}')
-                print(f'-------------------------')
-                
-            seguirONo()
+            if len(ventasdelDia)>0:
+                for reg in ventasdelDia:
+                    print(f'NRO FACTURA: {reg[0]}')
+                    print(f'FECHA: {reg[1]}')
+                    print(f'TIPO DE FACTURA: {reg[3]}')
+                    print(f'ID CLIENTE: {reg[4]}')
+                    print(f'ID ARTICULO: {reg[5]}')
+                    print(f'SUBTOTAL: {reg[8]}')
+                    print(f'-------------------------')
+                    
+                seguirONo()
+            else:
+                seguirONo()
     
     if opcion == '0':
         print('******MUCHAS GRACIAS POR UTILIZAR SISTEMA MAYORISTA WILLY ******')

@@ -7,7 +7,8 @@ dbMayorista = mariadb.connect(
     host = '127.0.0.1',
     user = 'root',
     password = '25109',
-    database = 'Mayorista_Willy'
+    database = 'Mayorista_Willy',
+    autocommit= True
 )
 mycursor = dbMayorista.cursor()
 camposProveedores = ('CUIT', 'Nombre', 'Titular','Direccion','Mail', 'Telefono', 'Id_Iva')

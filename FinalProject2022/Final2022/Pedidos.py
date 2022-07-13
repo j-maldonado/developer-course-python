@@ -11,7 +11,8 @@ dbMayorista = mariadb.connect(
     host = '127.0.0.1',
     user = 'root',
     password = '25109',
-    database = 'Mayorista_Willy'
+    database = 'Mayorista_Willy',
+    autocommit= True
 )
 mycursor = dbMayorista.cursor()
 camposPedidos = ('Fecha', 'id_Proveedor', 'id_Articulo', 'cantidad', 'estado', 'nro_Remito', 'Total_Remito', 'Comentario')
