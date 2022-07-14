@@ -95,28 +95,3 @@ class Pedido:
         mycursor.execute(sqlElimina)
         dbMayorista.commit()
 
-
-if __name__ == '__main__':
-    # Cliente_Campos = ('id_Cliente', 'DNI', 'NombreApellido', 'Direccion', 'Telefono', 'Mail', 'Id_Iva')
-    # Campos = Cliente_Campos[0]
-    # Valores = '%s'
-    # for i in range(1, len(Cliente_Campos)):
-    #     Campos = Campos + ',' + Cliente_Campos[i]
-    #     Valores = Valores + ', %s'
-    # print(Campos)
-    # print(Valores)
-    Ped = Pedido(datetime.date(2022, 7, 1), 2, 3, 5, 'en Proceso', 251091, 500, 'nada relevante 2')
-    #PedNuev= Pedido('2022-07-01', 2, 3, 5, 'en Proceso', 251091, 500, 'nada relevante 2')
-    Ped.altaPedido()
-    #PedNuev.editarPedido(3)
-    #consultaPedido= Ped.consultarPedido('Fecha','2022-07-01')
-    # consultanombre=Cli.consultaCliente('NombreApellido','Ale')
-    #print(Ped.mostrarPedido())
-    #print(consultaPedido)
-    # print(Cli.mostrarCliente())
-    # CliM = Cliente(24155337,'ALEJANDRA MAGISTRALI','PACHECO DE MELO 2635','1149921315','ahilenrocio@gmail.com',1)
-    #Cli.editarCliente(11111111)
-    # print(CliM.mostrarCliente())
-    # consultadni = Cli.consultaCliente('DNI', 24155337)
-    #print(Cli.mostrarCliente())
-    #Ped.borrarPedido('2')

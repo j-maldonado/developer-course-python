@@ -80,28 +80,3 @@ class Cliente:
         mycursor.execute(sqlElimina)
         dbMayorista.commit()
 
-
-
-#if __name__ == '__main__':
-    # Cliente_Campos = ('id_Cliente', 'DNI', 'NombreApellido', 'Direccion', 'Telefono', 'Mail', 'Id_Iva')
-    # Campos = Cliente_Campos[0]
-    # Valores = '%s'
-    # for i in range(1, len(Cliente_Campos)):
-    #     Campos = Campos + ',' + Cliente_Campos[i]
-    #     Valores = Valores + ', %s'
-    # print(Campos)
-    # print(Valores)
-    #Cli = Cliente(36596894,'JOAN MALDONADO','MARIO BRAVO 1155',1557558051,'joan@mail.com',3)
-    #CliNuev=Cliente(22448179,'KARINA MAILLARD','DOMINGO MILLAN 568',1549166315,'karina@mail.com',4)
-    #Cli.altaCliente()
-    #consultadni= Cli.consultarCliente('DNI',36596894)
-    # consultanombre=Cli.consultaCliente('NombreApellido','Ale')
-    # print(consultanombre)
-    #print(consultadni)
-    #print(Cli.mostrarCliente())
-    # CliM = Cliente(24155337,'ALEJANDRA MAGISTRALI','PACHECO DE MELO 2635','1149921315','ahilenrocio@gmail.com',1)
-    #CliNuev.editarCliente(36596894)
-    # print(CliM.mostrarCliente())
-    # consultadni = Cli.consultaCliente('DNI', 24155337)
-    #print(Cli.mostrarCliente())
-    #Cli.borrarCliente(11111111)

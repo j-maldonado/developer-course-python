@@ -86,23 +86,3 @@ class Articulo:
         sqlElimina = 'DELETE FROM articulos WHERE CodigoBarras = ' + str(valor)
         mycursor.execute(sqlElimina)
         dbMayorista.commit()
-
-
-#if __name__ == '__main__':
-    #Articulos_Campos = ('CodigoBarras', 'Nombre', 'Id_Rubro', 'Precio_Publico', 'Stock')
- #   Art = Articulo(1234567,'Sprite',5,300,30)
-    #print(Art.mostrarArticulo())
-    #NueArt = Articulo(54677,'Coca',5,500,30)
-  #  Art.altaArticulo()
-    #NueArt.editarArticulo(54677)
-    #consultacodigo= Art.consultarArticulo('Nombre','')
-    # consultanombre=Cli.consultaCliente('NombreApellido','Ale')
-    # print(consultanombre)
-    #print(consultacodigo)
-    # print(Cli.mostrarCliente())
-    # CliM = Cliente(24155337,'ALEJANDRA MAGISTRALI','PACHECO DE MELO 2635','1149921315','ahilenrocio@gmail.com',1)
-    
-    # print(CliM.mostrarCliente())
-    # consultadni = Cli.consultaCliente('DNI', 24155337)
-    #print(Cli.mostrarCliente())
-    #Art.borrarArticulo(234455)

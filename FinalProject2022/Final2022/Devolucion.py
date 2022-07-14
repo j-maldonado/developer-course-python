@@ -85,15 +85,3 @@ class Devolucion:
         dbMayorista.commit()
 
 
-if __name__ == '__main__':
-    Dev = Devolucion(2, datetime.date.today(), 3,'en Proceso', 'Mal Estado producto', 'estaba todo podrido')
-    NueDev = Devolucion(5,'2022-07-01', 3,'en Proceso', 'Mal Estado producto', 'estaba todo podrido')
-    #PedNuev= Pedido('2022-07-01', 2, 3, 5, 'en Proceso', 251091, 500, 'nada relevante 2')
-    Dev.altaDevolucion()
-    #NueDev.editarDevolucion(2)
-    #consultaDev= Dev.consultarDevolucion('id_Articulo',2)
-    # consultanombre=Cli.consultaCliente('NombreApellido','Ale')
-    #print(Ped.mostrarPedido())
-    #print(consultaDev)
-    #print(Dev.mostrarDevolucion())
-    #Dev.borrarDevolucion(5)
