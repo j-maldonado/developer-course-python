@@ -60,7 +60,31 @@ def pedirMail():
             print('****MAIL MAL INGRESADO****')
     return mail
 
+def buscarUltimoPedido():
+    sqlBuscarUltimoPedido="select MAX(id_pedido) from pedidos"
+    mycursor.execute(sqlBuscarUltimoPedido)
+    resultadoBuscarUltimoPedido=mycursor.fetchone()
+    if len(resultadoBuscarUltimoPedido) < 1:
+        ultimoPedido = 0
+        
+    else:
+        ultimoPedido= resultadoBuscarUltimoPedido[0]
+        
+    return ultimoPedido
 
+
+
+
+def listarProveedores():
+    sql= 'Select * From proveedores'
+    mycursor.execute(sql)
+    Resultado= mycursor.fetchall()
+    if len(Resultado) > 0:
+        for reg in Resultado:
+           print(f'''[{reg[0]}] - {reg[1]}\n''')
+        pedirIdProveedorLista=pedirIdProveedor()
+        
+    return pedirIdProveedorLista
 
 def validarSoloLetras(entrada):
     global listaNumeros
@@ -194,6 +218,18 @@ def pedirDni():
             print(
                 "****DNI MAL INGRESADO**** \n- Debe tener 8 caracteres, solamente numéricos -")
     return dni
+
+def pedirIdProveedor():
+    global idProveedor
+    validadoridProveedor = False
+    while validadoridProveedor == False:
+        idProveedor = input(": ")
+        if (contarLosCaracteres(idProveedor) > 0):
+            validadoridProveedor = validarNumerico(idProveedor)
+        if validadoridProveedor == False:
+            print(
+                "****OPCION MAL INGRESADA**** \n- caracteres, solamente numéricos -")
+    return idProveedor
 
 def existeCliente(dni):
     sqlbusqueda = 'SELECT * FROM clientes WHERE DNI = ' + str(dni)
@@ -509,26 +545,42 @@ while validador == True:
             
             ############SUBMENU PROVEEDORES PEDIDO DE REPOSICION ################
             elif opcionProveedores == '2':
-                
                 print("***************** PROVEEDORES  *****************")
                 print("************ PEDIDO DE REPOSICION  ************")
-                
-                print('''\n
-        [1] -  Reposicion por ID de Articulo
-        [2] -  Reposicion por Codigo de Barra de Articulo
-        [3] -  Reposicion por Nombre de Articulo
-                
-
-
-        [0]   VOLVER AL MENU PRINCIPAL ->
-
-                ''')
-                print("***********************************************")
-
-                opcionProveedoresPedidoReposicion = input('Elija la opción deseada:')
-                print(f"\nSu Opcion fue {opcionProveedoresPedidoReposicion}")
-        
-
+                seguir=True
+                ultimoPedidoEncontrado=buscarUltimoPedido()
+                numeroSolicitud= ultimoPedidoEncontrado + 1
+                fechaHoy= datetime.date.today()
+                proveedorElegido=listarProveedores()
+                while seguir:
+                    articuloElegido=int(input('INGRESE ID ARTICULO: '))
+                    cantidadArticulo=int(input('CANTIDAD: '))
+                    estado='SOLICITADO'
+                    comentario=input('COMENTARIO: ')
+                    confirmacionArticulo=int(input(f'''CONFIRMA AGREGAR ARTICULO AL PEDIDO : 
+                                - [1] SI
+                                - [2] NO'''))
+                    if confirmacionArticulo==1:
+                        solicitud= Pedidos.Pedido(numeroSolicitud,fechaHoy, proveedorElegido,articuloElegido,cantidadArticulo, estado, 0,0,comentario)
+                        solicitud.altaPedido()
+                        dbMayorista.commit()
+                        print('**** ARTICULO CARGADO ****')
+                        agregarArticulo=int(input(f'''DESEA AGREGAR OTRO ARTICULO AL PEDIDO ? : 
+                                - [1] SI
+                                - [2] NO'''))
+                        if agregarArticulo !=1:
+                            seguir=False
+                            print('****PEDIDO COMPLETADO****')
+                    elif confirmacionArticulo==2:
+                            print('**** PEDIDO ANULADO ****')
+                            seguirONo()
+                    else:
+                        print('**** OPCION INVALIDA ****')
+                        seguirONo()
+                else:
+                    
+                    seguirONo()
+                    
             ############SUBMENU PROVEEDORES DEVOLUCION A PROVEEDOR ################
             elif opcionProveedores == '3': 
                 print("***************** PROVEEDORES  *****************")

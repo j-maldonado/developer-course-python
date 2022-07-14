@@ -15,12 +15,13 @@ dbMayorista = mariadb.connect(
     autocommit= True
 )
 mycursor = dbMayorista.cursor()
-camposPedidos = ('Fecha', 'id_Proveedor', 'id_Articulo', 'cantidad', 'estado', 'nro_Remito', 'Total_Remito', 'Comentario')
+camposPedidos = ('id_Pedido','Fecha', 'id_Proveedor', 'id_Articulo', 'cantidad', 'estado', 'nro_Remito', 'Total_Remito', 'Comentario')
 
 
 ##Creacion de Clase Pedido
 class Pedido:
-    def __init__(self, fecha, idProveedor, idArticulo, cantidad,  estado,nroRemito, totalRemito, comentario):
+    def __init__(self, id_Pedidos, fecha, idProveedor, idArticulo, cantidad,  estado,nroRemito, totalRemito, comentario):
+        self.id_Pedidos= id_Pedidos
         self.fecha = fecha
         self.idProveedor = idProveedor
         self.idArticulo = idArticulo
@@ -32,7 +33,7 @@ class Pedido:
 
                 
 
-####Alta de Cliente   
+####Alta de Pedido   
     def altaPedido(self):
         Campos = camposPedidos[0]
         Valores = '%s'
@@ -86,7 +87,7 @@ class Pedido:
 
 #### Ver datos Pedido
     def mostrarPedido(self):
-        return self.fecha,self.idProveedor,self.idArticulo,self.cantidad,self.estado,self.nroRemito,self.totalRemito,self.comentario
+        return self.id_Pedidos, self.fecha,self.idProveedor,self.idArticulo,self.cantidad,self.estado,self.nroRemito,self.totalRemito,self.comentario
 
 #### Eliminar Pedido
     def borrarPedido(self,valor):
