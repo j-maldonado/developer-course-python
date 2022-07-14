@@ -38,6 +38,9 @@ class Articulo:
         dbMayorista.commit()
 
 
+    
+        
+
 ####Consulta de Articulo
     def consultarArticulo(self, campo, valor):
         if campo == 'CodigoBarras':
@@ -63,6 +66,13 @@ class Articulo:
                 sqlModifica =  sqlModifica + camposArticulos[i] + ' = \"' + ArtAux[i] + '\", '
 
         sqlModifica = sqlModifica + ' WHERE CodigoBarras = ' + str(valor)
+        mycursor.execute(sqlModifica)
+        dbMayorista.commit()
+        
+    ####Modificar datos de Articulo
+    def descontarStock(self,valor):
+        stockNuevo= self.stock-valor
+        sqlModifica = 'UPDATE Articulos SET stock ='+ str(stockNuevo) + ' WHERE CodigoBarras=' + str(self.codigoBarras)
         mycursor.execute(sqlModifica)
         dbMayorista.commit()
 

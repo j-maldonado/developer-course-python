@@ -13,6 +13,7 @@ import Pedidos
 import Ventas
 import Articulos
 import datetime
+import Devolucion
 
 dbMayorista = mariadb.connect(
     host = '127.0.0.1',
@@ -34,6 +35,19 @@ def clearConsole():
     if os.name in ('nt', 'dos'):
         command = 'cls'
     os.system(command)
+
+def seguirONo():
+    variable = input(
+        "[1] - VOLVER AL MENU PRINCIPAL\n[2] - SALIR DEL PROGRAMA\n ")
+    if variable == "1":
+        return True
+        
+    elif variable == "2":
+        exit()
+        
+    else:
+        print('**** COLOQUE UNA OPCION VALIDA****')
+        seguirONo()
 
 
 def contarLosCaracteres(entrada):
@@ -72,13 +86,36 @@ def buscarUltimoPedido():
         
     return ultimoPedido
 
+def buscarUltimaFactura():
+    sqlBuscarUltimaFactura="select MAX(Nro_Factura) from ventas"
+    mycursor.execute(sqlBuscarUltimaFactura)
+    resultadoBuscarUltimaFactura=mycursor.fetchone()
+    if len(resultadoBuscarUltimaFactura) < 1:
+        ultimoPedido = 0
+        
+    else:
+        ultimoPedido= resultadoBuscarUltimaFactura[0]
+        
+    return ultimoPedido
 
 
+def listarArticulos():
+    sql= 'Select * From articulos'
+    mycursor.execute(sql)
+    Resultado= mycursor.fetchall()
+    print(f'''\nSELECCIONE ARTICULO A SOLICITAR AL PROVEEDOR:\n''') 
+    if len(Resultado) > 0:
+        for reg in Resultado:
+           print(f'''[{reg[0]}] - {reg[2]}\n''')
+        pedirIdArticuloLista=pedirIdArticulo()
+        
+    return pedirIdArticuloLista
 
 def listarProveedores():
     sql= 'Select * From proveedores'
     mycursor.execute(sql)
     Resultado= mycursor.fetchall()
+    print(f'''\nSELECCIONE PROVEEDOR A REALIZAR PEDIDO:\n''') 
     if len(Resultado) > 0:
         for reg in Resultado:
            print(f'''[{reg[0]}] - {reg[2]}\n''')
@@ -159,6 +196,20 @@ def buscarSinStock ():
         return resultadoBusquedaArticulo
         seguirONo()
 
+def buscarConStock ():
+    sqlBusquedaArticulo= 'Select * from Articulos where stock > 0'
+    mycursor.execute(sqlBusquedaArticulo)
+    resultadoBusquedaArticulo=mycursor.fetchall()
+    if len(resultadoBusquedaArticulo)> 0:
+        return resultadoBusquedaArticulo
+    else:
+        print('****ARTICULO NO COINCIDE CON CONDICIONES DE BUSQUEDA ****')
+        return resultadoBusquedaArticulo
+    seguirONo()
+
+
+        
+
 def buscarVentasDelDia ():
     hoy=datetime.date.today()
     sqlBusquedaVentasDelDia= 'Select * from ventas where fecha =\"'+str(hoy)+'\"'
@@ -211,7 +262,7 @@ def pedirDni():
     global dni
     validadorDni = False
     while validadorDni == False:
-        dni = input("- DNI: ")
+        dni = input("- DNI CLIENTE: ")
         if (contarLosCaracteres(dni) == 8):
             validadorDni = validarNumerico(dni)
         if validadorDni == False:
@@ -227,6 +278,41 @@ def pedirIdProveedor():
         if (contarLosCaracteres(idProveedor) > 0):
             validadoridProveedor = validarNumerico(idProveedor)
         if validadoridProveedor == False:
+            print(
+                "****OPCION MAL INGRESADA**** \n- caracteres, solamente numéricos -")
+    return idProveedor
+
+def pedirIdCliente():
+    global idcliente
+    validadoridCliente= False
+    while validadoridCliente == False:
+        idcliente = input(f'************************************\n')
+        if (contarLosCaracteres(idcliente) > 0):
+            validadoridCliente = validarNumerico(idcliente)
+        if validadoridCliente == False:
+            print(
+                "****OPCION MAL INGRESADA**** \n- caracteres, solamente numéricos -")
+    return idProveedor
+
+def IdporStringCliente(valor):
+    sql='Select * From clientes Where DNI=' +str(valor)
+    mycursor.execute(sql)
+    resultadoIdPorStrinCliente=mycursor.fetchall()
+    if len(resultadoIdPorStrinCliente)> 0:
+        for reg in resultadoIdPorStrinCliente:
+            idporStringClienteEncontrado=reg[0]
+        return idporStringClienteEncontrado
+    
+    
+
+def pedirIdArticulo():
+    global idArticulo
+    validadoridArticulo = False
+    while validadoridArticulo == False:
+        idArticulo = input(f'************************************\n')
+        if (contarLosCaracteres(idArticulo) > 0):
+            validadoridArticulo = validarNumerico(idArticulo)
+        if validadoridArticulo == False:
             print(
                 "****OPCION MAL INGRESADA**** \n- caracteres, solamente numéricos -")
     return idProveedor
@@ -289,18 +375,7 @@ def pedirCodigo():
                 "****CODIGO DE BARRAS MAL INGRESADO**** \n- Debe tener 6 o mas caracteres, solamente numéricos -")
     return codigo
 
-def seguirONo():
-    variable = input(
-        "[1] - VOLVER AL MENU PRINCIPAL\n[2] - SALIR DEL PROGRAMA\n: ")
-    if variable == "1":
-        return True
-        
-    elif variable == "2":
-        exit()
-        
-    else:
-        print('**** COLOQUE UNA OPCION VALIDA****')
-        seguirONo() 
+ 
 
 def buscarDni(valor):
     sqlBusquedaDni= 'Select * from clientes where DNI =' +str(valor)
@@ -341,6 +416,18 @@ def buscarCodigo(valor):
     else:
         print('****ARTICULO NO EXISTE****')
         seguirONo()
+
+def buscarArticuloPorId(valor):
+    sqlBusquedaCodigo= 'Select * from articulos where id_articulo =' +str(valor)
+    mycursor.execute(sqlBusquedaCodigo)
+    resultadoBusquedaCodigo=mycursor.fetchall()
+    if len(resultadoBusquedaCodigo)> 0:
+        for reg in resultadoBusquedaCodigo:
+            codigoEncontrado=Articulos.Articulo(reg[1],reg[2],reg[3],reg[4],reg[5])
+        return codigoEncontrado
+    else:
+        print('****ARTICULO NO EXISTE****')
+        seguirONo()
         
         
 def IdporString(valor):
@@ -361,6 +448,7 @@ def IdporStringArticulo(valor):
         for reg in resultadoIdPorStringArticulo:
             idporStringEncontradoArticulo=reg[2]
         return idporStringEncontradoArticulo
+    
 
 def IdporStringRubro(valor):
     sql='Select * From rubros Where id_Articulo=' +str(valor)
@@ -403,8 +491,8 @@ def muestroMenu():
     print('''\n
     [1] - Proveedores:
         -   Alta / Baja / Modif
-        -   Pedido de reposición--------------F
-        -   Devolución a proveedor--------------FF
+        -   Pedido de reposición
+        -   Devolución a proveedor
 
     [2] - Cliente:
         -   Alta
@@ -414,11 +502,11 @@ def muestroMenu():
 
     [3] - Articulos:
         -   Alta / Baja / Modif
-        -   Ingreso de Remito--------------F
+        -   Ingreso de Remito
         -   Listado de Artículos sin Stock
 
     [4] - Ventas:
-        -   Facturación--------------FF
+        -   Facturación
         -   Listado de ventas del día
 
 
@@ -442,12 +530,12 @@ while validador == True:
     if opcion == '1':
             print("***************** PROVEEDORES *****************")
             print('''\n
-        [1] -  Alta / Baja / Modif
-        [2] -  Pedido de reposición
-        [3] -  Devolución a proveedor
+    [1] -  Alta / Baja / Modif
+    [2] -  Pedido de reposición
+    [3] -  Devolución a proveedor
 
 
-        [0]   VOLVER AL MENU PRINCIPAL ->
+    [0]   VOLVER AL MENU PRINCIPAL ->
             ''')
             print("***********************************************")
             opcionProveedores = input('Elija la opción deseada:')
@@ -460,12 +548,12 @@ while validador == True:
                 print("*************** ALTA/BAJA/MODIF  ***************")
                 
                 print('''\n
-            [1] -  Alta de Proveedor
-            [2] -  Baja de Proveedor
-            [3] -  Modificacion de Proveedor
+    [1] -  Alta de Proveedor
+    [2] -  Baja de Proveedor
+    [3] -  Modificacion de Proveedor
 
 
-            [0]   VOLVER AL MENU PRINCIPAL ->
+    [0]   VOLVER AL MENU PRINCIPAL ->
                 ''')
                 print("***********************************************")
                 opcionProveedoresAltaBajaModif = input('Elija la opción deseada:')
@@ -563,27 +651,29 @@ while validador == True:
                 fechaHoy= datetime.date.today()
                 proveedorElegido=listarProveedores()
                 while seguir:
-                    articuloElegido=int(input('INGRESE ID ARTICULO: '))
-                    cantidadArticulo=int(input('CANTIDAD: '))
-                    estado='SOLICITADO'
+                    articuloElegido=listarArticulos()
+                    cantidadArticulo=int(input('UNIDADES A SOLICITAR: '))
+                    estado='PENDIENTE'
                     comentario=input('COMENTARIO: ')
-                    confirmacionArticulo=int(input(f'''CONFIRMA AGREGAR ARTICULO AL PEDIDO : 
-                                - [1] SI
-                                - [2] NO'''))
+                    print(f'CONFIRMA AGREGAR ARTICULO AL PEDIDO ? : ')
+                    confirmacionArticulo=int(input(f'- [1] SI\n- [2] NO\n'))
                     if confirmacionArticulo==1:
                         solicitud= Pedidos.Pedido(numeroSolicitud,fechaHoy, proveedorElegido,articuloElegido,cantidadArticulo, estado, 0,0,comentario)
                         solicitud.altaPedido()
                         dbMayorista.commit()
-                        print('**** ARTICULO CARGADO ****')
-                        agregarArticulo=int(input(f'''
-                        DESEA AGREGAR OTRO ARTICULO AL PEDIDO ? : 
-                        - [1] SI
-                        - [2] NO'''))
-                        if agregarArticulo !=1:
+                        clearConsole()
+                        print('**** ARTICULO CARGADO A PEDIDO ****\n')
+                        seguir=False
+                        """ print('DESEA AGREGAR OTRO ARTICULO AL PEDIDO DEL PROVEEDOR ACTUAL?')
+                        agregarArticulo=int(input(f'- [1] SI\n- [2] NO\n'))
+                        if agregarArticulo == 1:
+                            seguir=True
+                            clearConsole()
+                        else:
                             seguir=False
-                            print('****PEDIDO COMPLETADO****')
+                            seguirONo() """
                     elif confirmacionArticulo==2:
-                            print('**** PEDIDO ANULADO ****')
+                            print('****PEDIDO COMPLETADO****')
                             seguirONo()
                     else:
                         print('**** OPCION INVALIDA ****')
@@ -595,20 +685,25 @@ while validador == True:
             ############SUBMENU PROVEEDORES DEVOLUCION A PROVEEDOR ################
             elif opcionProveedores == '3': 
                 print("***************** PROVEEDORES  *****************")
-                print("*********** DEVOLUCION A PROVEEDOR  ***********")
-                    
-                print('''\n
-            [1] -  Devolucion por ID de Articulo
-            [2] -  Devolucion por Codigo de Barra de Articulo
-            [3] -  Devolucion por Nombre de Articulo
-
-
-            [0]   VOLVER AL MENU PRINCIPAL ->
-                ''')
+                print("*********** DEVOLUCION A PROVEEDOR  ***********")    
                 print("***********************************************")
-                opcionProveedoresDevolucionAProveedor = input('Elija la opción deseada:')
-                print(f"\nSu Opcion fue {opcionProveedoresDevolucionAProveedor}")
-
+                idArticuloADevoler=int(input('INGRESE ID ART A DEVOLV: '))
+                fechaHoy=datetime.date.today()
+                cantidad=int(input('INGRESE CANTIDAD A DEVOLVER: '))
+                estado='DEVOLUCION ENVIADA'
+                motivo=input('INGRESE MOTIVO: ')
+                descripcion=input('INGRESE DESCRIPCION: ')
+                DevolucionACargar= Devolucion.Devolucion(idArticuloADevoler, fechaHoy, cantidad, estado, motivo, descripcion)
+                DevolucionACargar.altaDevolucion()
+                print('****DEVOLUCION CARGADA****')
+                stockAModificar=buscarArticuloPorId(idArticuloADevoler)
+                stockAModificar.descontarStock(cantidad)
+                print('****STOCK DESCONTADO****')
+                seguirONo()
+                
+                
+                
+                
 
             ############SUBMENU PROVEEDORES VOLVER MENU PRINCIPAL ################
             elif opcionProveedores == '0':
@@ -628,13 +723,13 @@ while validador == True:
     elif opcion == '2':
                 print("***************** CLIENTES *****************")
                 print('''\n
-            [1] -  Alta de Cliente
-            [2] -  Baja de Cliente
-            [3] -  Modificacion de Cliente
-            [4] -  Mostrar Cliente
+        [1] -  Alta de Cliente
+        [2] -  Baja de Cliente
+        [3] -  Modificacion de Cliente
+        [4] -  Mostrar Cliente
 
 
-            [0]   VOLVER AL MENU PRINCIPAL ->
+        [0]   VOLVER AL MENU PRINCIPAL ->
                 ''')
                 print("***********************************************")
                 opcionClientes = input('Elija la opción deseada:')
@@ -750,12 +845,12 @@ while validador == True:
     elif opcion == '3':
         print("***************** ARTICULOS *****************")
         print('''\n
-            [1] -   Alta / Baja / Modif
-            [2] -   Ingreso de Remito
-            [3] -   Listado de Artículos sin Stock
+        [1] -   Alta / Baja / Modif
+        [2] -   Ingreso de Remito
+        [3] -   Listado de Artículos sin Stock
 
 
-            [0]   VOLVER AL MENU PRINCIPAL ->
+        [0]   VOLVER AL MENU PRINCIPAL ->
                 ''')
         print("***********************************************")
         opcionArticulos = input('Elija la opción deseada:')
@@ -767,12 +862,12 @@ while validador == True:
             print("***************** ARTICULOS *****************")
             print("************** ALTA/BAJA/MODIF  **************")
             print('''\n
-            [1] -  Alta de Articulo
-            [2] -  Baja de Articulo
-            [3] -  Modificacion de Articulo
+        [1] -  Alta de Articulo
+        [2] -  Baja de Articulo
+        [3] -  Modificacion de Articulo
 
 
-            [0]   VOLVER AL MENU PRINCIPAL ->
+        [0]   VOLVER AL MENU PRINCIPAL ->
                 ''')
             print("***********************************************")
             opcionArticuloAltaBajaModificacion = input('Elija la opción deseada:')
@@ -871,8 +966,10 @@ while validador == True:
                 seguirONo()
             else:
                 for reg in resultadoPedidosPendientes:
-                    print(f''' 
-                    {reg[0]}, {reg[1]}, {reg[2]}''') #################################################################
+                    print(f'ID PEDIDO: {reg[0]}')
+                    print(f'FECHA DE PEDIDO: {reg[1]}')
+                    print(f'ID PROVEEDOR: {reg[2]}')
+                    print('***********************\n')#################################################################
                      
                 pedidoElegido=int(input('INGRESE ID PEDIDO: ')) ###ARMAR FUNCION
                 pedidosPorProveedor='Select * from pedidos where id_Pedido ='+ str(pedidoElegido)
@@ -885,9 +982,9 @@ while validador == True:
                     NumRemito=int(input('INGRESE NUMERO REMITO: '))
                     for reg in resultado:
                         print(f'ARTICULO: {IdporStringArticulo(reg[3])}')
-                        print(f'CANTIDAD:{reg[4]}')
-                        print('******************')
-                        reponerStock=int(input('CANTIDAD REMITO: '))
+                        print(f'CANTIDAD SOLICITADA:{reg[4]}')
+                        print('******************\n')
+                        reponerStock=int(input('CANTIDAD A REPONER REMITO: '))
                         subtotal=int(input('INGRESE SUBTOTAL DEL ARTICULO: '))
                         comentario='CANTIDAD SOLICITADA '+ str(reg[4])
                         pedidoConRemito=Pedidos.Pedido(pedidoElegido, reg[1],reg[2],reg[3], reponerStock,'COMPLETADO', NumRemito, subtotal, comentario )
@@ -896,6 +993,7 @@ while validador == True:
                         buscarStockActual='Select stock From Articulos Where id_Articulo=' + str(reg[3])
                         mycursor.execute(buscarStockActual)
                         resultado=mycursor.fetchall()
+                        print('**** REMITO CARGADO CON EXITO ****')
                         if len(resultado) < 1 :
                             print('**** NO EXISTE ARTICULO CON ID INGRESADO ****')
                             seguirONo()
@@ -952,6 +1050,46 @@ while validador == True:
         if opcionVentas =='1':
             print("**************** VENTAS ****************")
             print("************** FACTURACION **************")
+            dni=pedirDni()
+            existeCliente(dni)
+            if existeCliente(dni)==True:
+                print('***VENTA CLIENTE***')
+                articulosConStock=buscarConStock()
+                for reg in articulosConStock:
+                    print(f'ID ARTICULO: {reg[0]}')
+                    print(f'CODIGO DE BARRA:{reg[1]}')
+                    print(f'NOMBRE ARTICULO:{reg[2]}')
+                    print(f'ID RUBRO: {reg[3]}')
+                    print(f'PRECIO PUBLICO:{reg[4]}')
+                    print(f'STOCK: {reg[5]}')
+                    print(f'-------------------------')
+                articuloSeleccionado=int(input('INGRESE ID DE ARTICULO: '))
+                articuloEncontrado=buscarArticuloPorId(articuloSeleccionado)
+                print(f'****************************')
+                print(f'ARTICULO: {articuloEncontrado.nombre}')
+                print(f'STOCK: {articuloEncontrado.stock}')
+                cantidadArticuloSeleccionado=int(input('INGRESE CANTIDAD: '))##########VALIDAR INPUT MENOR A STOCK
+                if cantidadArticuloSeleccionado > articuloEncontrado.stock:
+                    print('****NO PUEDE VENDER MAS ARTICULOS DE LOS QUE HAY EN STOCK****')
+                else:
+                    fechaHoy=datetime.date.today()
+                    idCliente=IdporStringCliente(dni)
+                    precioPublico=articuloEncontrado.precioPublico
+                    subtotal= cantidadArticuloSeleccionado * precioPublico
+                    nrofactura=buscarUltimaFactura() + 1
+                    generarFactura= Ventas.Ventas(nrofactura,fechaHoy, 'C',idCliente,articuloSeleccionado,articuloEncontrado.nombre,cantidadArticuloSeleccionado,articuloEncontrado.precioPublico, subtotal)
+                    generarFactura.altaVenta()
+                    articuloEncontrado.descontarStock(generarFactura.cantidad)
+                    print('VENTA OKEY') #######################################################PRINTTTTEAARRR
+                    seguirONo()
+                    
+                    
+                
+            else:
+                print('****CLIENTE NO REGISTRADO EN NUESTRA BASE****')
+                seguirONo()
+            
+            
         
         ############SUBMENU VENTAS FACTURACION################
         elif opcionVentas =='2':
