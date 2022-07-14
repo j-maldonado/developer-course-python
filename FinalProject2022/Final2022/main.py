@@ -341,6 +341,18 @@ def pedirIdArticuloDevolucion():
                 "****OPCION MAL INGRESADA**** \n- caracteres, solamente numéricos -")
     return idArticulo
 
+def pedirIdArticuloVenta():
+    global idArticulo
+    validadoridArticulo = False
+    while validadoridArticulo == False:
+        idArticulo = input(f'\n\n- ID ARTICULO: ')
+        if (contarLosCaracteres(idArticulo) > 0):
+            validadoridArticulo = validarNumerico(idArticulo)
+        if validadoridArticulo == False:
+            print(
+                "****OPCION MAL INGRESADA**** \n- caracteres, solamente numéricos -")
+    return idArticulo
+
 def existeCliente(dni):
     sqlbusqueda = 'SELECT * FROM clientes WHERE DNI = ' + str(dni)
     mycursor.execute(sqlbusqueda)        
@@ -1059,7 +1071,7 @@ while validador == True:
                         print(f'CANTIDAD SOLICITADA:{reg[4]}')
                         print('******************\n')
                         reponerStock=int(input('CANTIDAD A REPONER REMITO: '))
-                        subtotal=int(input('INGRESE SUBTOTAL DEL ARTICULO: '))
+                        subtotal=int(input('INGRESE VALOR TOTAL DE REMITO: '))
                         comentario='CANTIDAD SOLICITADA '+ str(reg[4])
                         pedidoConRemito=Pedidos.Pedido(pedidoElegido, reg[1],reg[2],reg[3], reponerStock,'COMPLETADO', NumRemito, subtotal, comentario )
                         pedidoConRemito.editarPedido(pedidoElegido)
@@ -1130,19 +1142,19 @@ while validador == True:
                 print('***VENTA CLIENTE***')
                 articulosConStock=buscarConStock()
                 for reg in articulosConStock:
-                    print(f'ID ARTICULO: {reg[0]}')
+                    print(f'----ID ARTICULO: {reg[0]}----')
                     print(f'CODIGO DE BARRA:{reg[1]}')
                     print(f'NOMBRE ARTICULO:{reg[2]}')
                     print(f'ID RUBRO: {reg[3]}')
                     print(f'PRECIO PUBLICO:{reg[4]}')
                     print(f'STOCK: {reg[5]}')
-                    print(f'-------------------------')
-                articuloSeleccionado=int(input('INGRESE ID DE ARTICULO: '))
+                    print(f'-------------------------\n')
+                articuloSeleccionado=pedirIdArticuloVenta()
                 articuloEncontrado=buscarArticuloPorId(articuloSeleccionado)
                 print(f'****************************')
                 print(f'ARTICULO: {articuloEncontrado.nombre}')
                 print(f'STOCK: {articuloEncontrado.stock}')
-                cantidadArticuloSeleccionado=int(input('INGRESE CANTIDAD: '))##########VALIDAR INPUT MENOR A STOCK
+                cantidadArticuloSeleccionado=cantidadArticuloSeleccionado=int(input('INGRESE CANTIDAD: '))
                 if cantidadArticuloSeleccionado > articuloEncontrado.stock:
                     print('****NO PUEDE VENDER MAS ARTICULOS DE LOS QUE HAY EN STOCK****')
                 else:
@@ -1154,7 +1166,8 @@ while validador == True:
                     generarFactura= Ventas.Ventas(nrofactura,fechaHoy, 'C',idCliente,articuloSeleccionado,articuloEncontrado.nombre,cantidadArticuloSeleccionado,articuloEncontrado.precioPublico, subtotal)
                     generarFactura.altaVenta()
                     articuloEncontrado.descontarStock(generarFactura.cantidad)
-                    print('VENTA OKEY') #######################################################PRINTTTTEAARRR
+                    clearConsole()
+                    print('**** VENTA REALIZADA CON EXITO ****')
                     seguirONo()
                     
                     
