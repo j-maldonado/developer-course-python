@@ -81,7 +81,7 @@ def listarProveedores():
     Resultado= mycursor.fetchall()
     if len(Resultado) > 0:
         for reg in Resultado:
-           print(f'''[{reg[0]}] - {reg[1]}\n''')
+           print(f'''[{reg[0]}] - {reg[2]}\n''')
         pedirIdProveedorLista=pedirIdProveedor()
         
     return pedirIdProveedorLista
@@ -223,7 +223,7 @@ def pedirIdProveedor():
     global idProveedor
     validadoridProveedor = False
     while validadoridProveedor == False:
-        idProveedor = input(": ")
+        idProveedor = input(f'************************************\n')
         if (contarLosCaracteres(idProveedor) > 0):
             validadoridProveedor = validarNumerico(idProveedor)
         if validadoridProveedor == False:
@@ -351,6 +351,16 @@ def IdporString(valor):
         for reg in resultadoIdPorString:
             idporStringEncontrado=reg[1]
         return idporStringEncontrado
+    
+
+def IdporStringArticulo(valor):
+    sql='Select * From articulos Where Id_Articulo=' +str(valor)
+    mycursor.execute(sql)
+    resultadoIdPorStringArticulo=mycursor.fetchall()
+    if len(resultadoIdPorStringArticulo)> 0:
+        for reg in resultadoIdPorStringArticulo:
+            idporStringEncontradoArticulo=reg[2]
+        return idporStringEncontradoArticulo
 
 def IdporStringRubro(valor):
     sql='Select * From rubros Where id_Articulo=' +str(valor)
@@ -393,7 +403,7 @@ def muestroMenu():
     print('''\n
     [1] - Proveedores:
         -   Alta / Baja / Modif
-        -   Pedido de reposición--------------FF
+        -   Pedido de reposición--------------F
         -   Devolución a proveedor--------------FF
 
     [2] - Cliente:
@@ -404,7 +414,7 @@ def muestroMenu():
 
     [3] - Articulos:
         -   Alta / Baja / Modif
-        -   Ingreso de Remito--------------FF
+        -   Ingreso de Remito--------------F
         -   Listado de Artículos sin Stock
 
     [4] - Ventas:
@@ -565,9 +575,10 @@ while validador == True:
                         solicitud.altaPedido()
                         dbMayorista.commit()
                         print('**** ARTICULO CARGADO ****')
-                        agregarArticulo=int(input(f'''DESEA AGREGAR OTRO ARTICULO AL PEDIDO ? : 
-                                - [1] SI
-                                - [2] NO'''))
+                        agregarArticulo=int(input(f'''
+                        DESEA AGREGAR OTRO ARTICULO AL PEDIDO ? : 
+                        - [1] SI
+                        - [2] NO'''))
                         if agregarArticulo !=1:
                             seguir=False
                             print('****PEDIDO COMPLETADO****')
@@ -852,7 +863,50 @@ while validador == True:
         elif opcionArticulos =='2':
             print("***************** ARTICULOS *****************")
             print("************ INGRESO DE REMITO  ************")
-        
+            pedidosPendientes='Select * From pedidos Where estado =\"PENDIENTE\" Order by id_Proveedor'
+            mycursor.execute(pedidosPendientes)
+            resultadoPedidosPendientes=mycursor.fetchall()
+            if len (resultadoPedidosPendientes)<1:
+                print('*****NO HAY PEDIDOS PENDIENTES*****')
+                seguirONo()
+            else:
+                for reg in resultadoPedidosPendientes:
+                    print(f''' 
+                    {reg[0]}, {reg[1]}, {reg[2]}''') #################################################################
+                     
+                pedidoElegido=int(input('INGRESE ID PEDIDO: ')) ###ARMAR FUNCION
+                pedidosPorProveedor='Select * from pedidos where id_Pedido ='+ str(pedidoElegido)
+                mycursor.execute(pedidosPorProveedor)
+                resultado=mycursor.fetchall()
+                if len(resultado) <1:
+                    print('****OPCION INVALIDA****')
+                    seguirONo()
+                else:
+                    NumRemito=int(input('INGRESE NUMERO REMITO: '))
+                    for reg in resultado:
+                        print(f'ARTICULO: {IdporStringArticulo(reg[3])}')
+                        print(f'CANTIDAD:{reg[4]}')
+                        print('******************')
+                        reponerStock=int(input('CANTIDAD REMITO: '))
+                        subtotal=int(input('INGRESE SUBTOTAL DEL ARTICULO: '))
+                        comentario='CANTIDAD SOLICITADA '+ str(reg[4])
+                        pedidoConRemito=Pedidos.Pedido(pedidoElegido, reg[1],reg[2],reg[3], reponerStock,'COMPLETADO', NumRemito, subtotal, comentario )
+                        pedidoConRemito.editarPedido(pedidoElegido)
+                        dbMayorista.commit()
+                        buscarStockActual='Select stock From Articulos Where id_Articulo=' + str(reg[3])
+                        mycursor.execute(buscarStockActual)
+                        resultado=mycursor.fetchall()
+                        if len(resultado) < 1 :
+                            print('**** NO EXISTE ARTICULO CON ID INGRESADO ****')
+                            seguirONo()
+                        else:
+                            for registro in resultado:
+                                stockActual= registro[0] + reponerStock
+                        modifcarStockArticulo='UPDATE ARTICULOS SET Stock =' + str(stockActual) + ' Where Id_articulo = '+ str(reg[3])
+                        mycursor.execute(modifcarStockArticulo)
+                        dbMayorista.commit()
+                    seguirONo()
+                    
         ############SUBMENU ARTICULOS ARTICULOS SIN STOCK################
         elif opcionArticulos =='3':
             print("***************** ARTICULOS *****************")

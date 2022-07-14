@@ -69,16 +69,16 @@ class Pedido:
 ####Modificar datos de pedido
     def editarPedido(self,valor):
         PedAux = self.mostrarPedido()
-        sqlModifica = 'UPDATE Pedidos SET '
-        for i in range(0, len(camposPedidos)):
-            if i == 7:   ####ultimo campo
+        sqlModifica = 'UPDATE pedidos SET '
+        for i in range(4, len(camposPedidos)):
+            if i == 8:   ####ultimo campo
                 sqlModifica = sqlModifica + camposPedidos[i] + ' = \" '+ str(PedAux[i]) + '\"'
-            elif i == 0:
+            elif i == 1:
                 sqlModifica = sqlModifica + camposPedidos[i] + ' = \" '+str(PedAux[i])+ '\",'
-            elif i == 1 or i==2 or i==3 or i==5 or i==6:
+            elif i==4 or i==6 or i==7:
                 sqlModifica = sqlModifica + camposPedidos[i] + ' = ' + str(PedAux[i]) + ', '
             else:
-                sqlModifica =  sqlModifica + camposPedidos[i] + ' = \"' + PedAux[i] + '\", '
+                sqlModifica =  sqlModifica + camposPedidos[i] + ' = \"' + str(PedAux[i]) + '\", '
 
         sqlModifica = sqlModifica + ' WHERE id_Pedido = ' + str(valor)
         mycursor.execute(sqlModifica)
